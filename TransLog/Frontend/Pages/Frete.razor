@@ -1,0 +1,33 @@
+﻿@page "/Fretes"
+
+<h3>Frete</h3>
+
+<EditForm Model="FreteRequest" OnValidSubmit="FreteRequest">
+    <DataAnnotationsValidator/> 
+    <div class="row">
+            <div class="col-4">
+                <label>Distancia em km</label>
+                <input class="form-control valid" _bl_2="">
+            </div>
+            <div class="col-4">
+                <label>Peso em kg</label>
+                <input class="form-control valid" _bl_2="">
+            </div>
+            <div class="col-4">
+            <label>Altura em m</label>
+                <input class="form-control valid" _bl_2="">
+            </div>
+            <div class="col-4">
+                <label>Largura em m</label>
+                <input class="form-control valid" _bl_2="">
+            </div>
+            <div class="col-4">
+                <label>Comprimento em m</label>
+                <input class="form-control valid" _bl_2="">
+             </div>
+            <button type="submit" class="btn btn-outline-primary mt-2">Calcular Frete</button>
+    </div>
+    </EditForm>
+@code {
+    private FreteRequest FreteRequest { get; set; } = new();
+}
