@@ -1,8 +1,9 @@
 ﻿@page "/Fretes"
+@using Frontend.Models.Request;
 
 <h3>Frete</h3>
 
-<EditForm Model="FreteRequest" OnValidSubmit="FreteRequest">
+<EditForm Model="_cargaRequest" OnValidSubmit="">
     <DataAnnotationsValidator/> 
     <div class="row">
             <div class="col-4">
@@ -29,5 +30,5 @@
     </div>
     </EditForm>
 @code {
-    private FreteRequest FreteRequest { get; set; } = new();
+    private CargaRequest _cargaRequest { get; set; } = new();
 }
