@@ -1,21 +1,46 @@
 ﻿
+using Microsoft.AspNetCore.Mvc;
 using Backend.Models.Request;
+using Backend.Models.Response;
 
 namespace Backend.Controllers
 {
-    public class FreteController : FreteRequest
+
+    [ApiController]
+    [Route("[controller]")]
+
+    public class FreteController : ControllerBase
     {
-        const double ValorFixoPorKm = 0.50;
-        const double ValorAdicionalPorKg = 1.00;
-        const double ValorAdicionalPorM3 = 2.00;
+        [HttpGet]
+        [Route("obter")]
 
-       
-        double custoFrete = (DistanciaEmKm * ValorFixoPorKm) +
-                            (PesoEmKg * ValorAdicionalPorKg) +
-                            (LarguraEmMetros * AlturaEmMetros * ComprimentoEmMetros * ValorAdicionalPorM3);
+        public IActionResult CalcularFrete([FromQuery] FreteRequest request) 
+        {
+            var altura = request.AlturaEmMetros;
+            var peso = request.PesoEmKg;
+            var distancia = request.DistanciaEmKm;
+            var largura = request.LarguraEmMetros;
+            var comprimento = request.ComprimentoEmMetros;  
+           
+            var response = new FreteResponse();
 
-    return CustoFrete;
-    };
+            var valorTotal = (distancia * 0.50) + (peso * 1) + (largura * altura * comprimento * 2);
+
+            response.CustoFrete = valorTotal;
+ 
+            return Ok(response);
+        }
+
+        //var response = new FreteRequest();
+
+
+
+        //double custoFrete = (DistanciaEmKm * ValorFixoPorKm) +
+        //                    (PesoEmKg * ValorAdicionalPorKg) +
+        //                    (LarguraEmMetros * AlturaEmMetros * ComprimentoEmMetros * ValorAdicionalPorM3);
+
+        //return custoFrete;
+    }
 }
     
 

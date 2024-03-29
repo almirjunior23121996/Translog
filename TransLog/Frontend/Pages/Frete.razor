@@ -1,9 +1,10 @@
 ﻿@page "/Fretes"
 @using Frontend.Models.Request;
+@using Frontend.Models.Response;
 
 <h3>Frete</h3>
 
-<EditForm Model="_cargaRequest" OnValidSubmit="">
+<EditForm Model="_cargaRequest" OnValidSubmit="GeraraFrete">
     <DataAnnotationsValidator/> 
     <div class="row">
             <div class="col-4">
@@ -29,6 +30,48 @@
             <button type="submit" class="btn btn-outline-primary mt-2">Calcular Frete</button>
     </div>
     </EditForm>
+
+@if (exibirFrete)
+{
+     <div class="row mt-4 p-5">
+        <div class="col-md-12">
+            <div class="h-100 text-center p-5 rounded-3">
+                <h5>
+                    <span>@_cargaResponse.CustoFrete</span>
+                </h5>
+            </div>
+        </div>
+    </div>
+}
 @code {
     private CargaRequest _cargaRequest { get; set; } = new();
+    private CargaResponse _cargaResponse { get; set; } = new();
+    private bool exibirFrete = true;
+    private async Task GeraraFrete()
+    {
+        //lembre de sempre alterar a url da api para a url, use swagger para verificar a url
+        var apiUrl = $"https://localhost:7091/Frete/obter?DistanciaEmKm={_cargaRequest.DistanciaEmKm}&PesoEmKg={_cargaRequest.PesoEmKg}&LarguraEmMetros={_cargaRequest.LarguraEmMetros}&AlturaEmMetros={_cargaRequest.AlturaEmMetros}&ComprimentoEmMetros={_cargaRequest.ComprimentoEmMetros}";
+        var http = new HttpClient();
+
+        try
+        {
+            //faça um httpget para a api passando o nome e a data de nascimento o retorno é um objeto do tipo CarteirinhaResponse
+            _cargaResponse = await http.GetFromJsonAsync<CargaResponse>(apiUrl);
+
+            //Verifica se existe um valor para a cor de fundo, se existir exibe a carteirinha
+            if (_cargaResponse.CustoFrete >= 0)
+            {
+                exibirFrete = true;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+
+
+
+    }
 }
+
